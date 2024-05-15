@@ -41,7 +41,10 @@ class FightingStream(StreamInterface):
         self.tts_model = TextToSpeechModel()
 
     def initialize(self, game_data: GameData):
-        pass
+        image = np.zeros((640, 960, 3), dtype=np.uint8)
+        put_text_on_image(image, "Waiting for Round Start", x=480, y=200)
+        cv2.imshow("DareFightingICE", image)
+        cv2.waitKey(1)
 
     def get_information(self, frame_data: FrameData):
         if self.previous_frame + 1 != frame_data.current_frame_number:
@@ -56,10 +59,11 @@ class FightingStream(StreamInterface):
         self.screen_data = screen_data
 
     def generate_commentary_thread(self):
-        text = "Hello World! From DareFightingICE !!"
-        self.current_speech = self.tts_model.generate_speech(text)
+        text = ("Both players are at a considerable HP, with Player 1 in the air and Player 2 standing, "
+                "but Player 2's energy is higher than Player 1's.")
+        # self.current_speech = self.tts_model.generate_speech(text)
         self.current_text = text
-        self.sound_manager.playback(self.speech_audio_source, al.AL_FORMAT_MONO16, self.current_speech.tobytes(), 16000)
+        # self.sound_manager.playback(self.speech_audio_source, al.AL_FORMAT_MONO16, self.current_speech.tobytes(), 16000)
 
     def play_game_audio(self):
         audio = np.frombuffer(self.audio_data.raw_data_bytes, dtype=np.float32)
@@ -78,7 +82,7 @@ class FightingStream(StreamInterface):
         image = np.frombuffer(self.screen_data.display_bytes, dtype=np.uint8)
         image = image.reshape((640, 960, 3))
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-        if self.sound_manager.is_playing(self.speech_audio_source):
+        if self.current_text:
             put_text_on_image(image, self.current_text, x=480, y=600)
         cv2.imshow("DareFightingICE", image)
         cv2.waitKey(1)
