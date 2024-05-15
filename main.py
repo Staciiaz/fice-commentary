@@ -1,10 +1,10 @@
 import asyncio
-import os
 import logging
+import os
 
 import typer
 from pyftg.utils.gateway import get_async_gateway
-from pyftg.utils.logging import DEBUG, set_logging
+from pyftg.utils.logging import INFO, set_logging
 from typing_extensions import Annotated, Optional
 
 from src.core import FightingStream
@@ -24,6 +24,8 @@ async def start_process(host: str, port: int):
         await gateway.close()
     except ConnectionResetError:
         logger.info("Connection closed by server")
+    except ConnectionRefusedError:
+        logger.info("Unable to connect to server")
 
 
 @app.command()
@@ -34,5 +36,5 @@ def main(
 
 
 if __name__ == '__main__':
-    set_logging(log_level=DEBUG)
+    set_logging(log_level=INFO)
     app()
