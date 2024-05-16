@@ -1,4 +1,8 @@
+import logging
+
 import chromadb
+
+logger = logging.getLogger(__name__)
 
 
 class CommentaryModel:
@@ -12,6 +16,11 @@ class CommentaryModel:
             name="Baseline",
             metadata={"hnsw:space": "cosine"}
         )
+        self.initialize()
+
+    def initialize(self):
+        self.generate_commentary([0.0] * 420)
+        logger.info("Commentary model initialized")
 
     def generate_commentary(self, embedding: list[float]) -> str:
         response = self.collection.query(
