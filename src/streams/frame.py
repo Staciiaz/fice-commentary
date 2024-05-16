@@ -6,14 +6,18 @@ from src.core import DataManager
 
 
 class FrameStream(StreamInterface):
-    def __init__(self, data_manager: DataManager) -> None:
+    def __init__(self, data_manager: DataManager):
         self.data_manager = data_manager
+        self.frame_data = FrameData()
 
     def get_frame_data_flag(self) -> bool:
         return True
 
     def get_information(self, frame_data: FrameData):
-        self.data_manager.on_frame_data_recv(frame_data)
+        self.frame_data = frame_data
 
-    def round_end(self, round_result: RoundResult) -> None:
+    def processing(self):
+        self.data_manager.on_frame_data_recv(self.frame_data)
+
+    def round_end(self, round_result: RoundResult):
         self.data_manager.on_round_end()

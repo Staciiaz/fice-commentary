@@ -1,0 +1,6 @@
+MAX_FRAME_NUMBER = 3600
+MAX_HP = 400
+MAX_ENERGY = 300
+STAGE_HEIGHT = 640
+STAGE_WIDTH = 960
+ATTACK_TYPES = ["None", "High", "Middle", "Low", "Throw"]
