@@ -14,6 +14,7 @@ class ScreenStream(StreamInterface):
 
     def get_screen_data(self, screen_data: ScreenData):
         self.screen_data = screen_data
+        self.data_manager.on_screen_data_recv(self.screen_data)
 
     def processing(self):
-        self.data_manager.on_screen_data_recv(self.screen_data)
+        pass

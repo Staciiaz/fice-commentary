@@ -68,20 +68,18 @@ class DataManager:
         if frame_data.empty_flag or frame_data.current_frame_number < 0:
             return
         
-        logger.info(f"Frame: {frame_data.current_frame_number}")
-        
         self.frames_data.append(frame_data)
         while len(self.frames_data) > 3:
             self.frames_data.pop(0)
 
-        # if len(self.frames_data) >= 3 and not self.is_commentary_generating and frame_data.current_frame_number >= self.last_frame + 300:
-        #     self.last_frame = frame_data.current_frame_number
-        #     frame_embedding: List[float] = []
-        #     for frame_data in reversed(self.frames_data):
-        #         frame_dict = process_frame_data(frame_data)
-        #         frame_embedding.extend(embedding_frame_data(frame_dict))
-        #     loop = asyncio.get_event_loop()
-        #     loop.run_in_executor(None, self.do_commentary_generation, self.current_round, frame_embedding)
+        if len(self.frames_data) >= 3 and not self.is_commentary_generating and frame_data.current_frame_number >= self.last_frame + 300:
+            self.last_frame = frame_data.current_frame_number
+            frame_embedding: List[float] = []
+            for frame_data in reversed(self.frames_data):
+                frame_dict = process_frame_data(frame_data)
+                frame_embedding.extend(embedding_frame_data(frame_dict))
+            loop = asyncio.get_event_loop()
+            loop.run_in_executor(None, self.do_commentary_generation, self.current_round, frame_embedding)
 
     def on_audio_data_recv(self, audio_data: AudioData):
         self.audio_data = audio_data

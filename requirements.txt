@@ -7,3 +7,4 @@ torchaudio~=2.3.0
 torchvision~=0.18.0
 chardet~=5.2.0
 datasets~=2.19.1
+chromadb~=0.5.0

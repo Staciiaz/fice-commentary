@@ -15,9 +15,10 @@ class FrameStream(StreamInterface):
 
     def get_information(self, frame_data: FrameData):
         self.frame_data = frame_data
+        self.data_manager.on_frame_data_recv(self.frame_data)
 
     def processing(self):
-        self.data_manager.on_frame_data_recv(self.frame_data)
+        pass
 
     def round_end(self, round_result: RoundResult):
         self.data_manager.on_round_end()
