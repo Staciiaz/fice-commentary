@@ -3,7 +3,7 @@ import logging
 import os
 
 import typer
-from pyftg.utils.gateway import get_async_gateway
+from pyftg.socket.aio.gateway import Gateway
 from pyftg.utils.logging import INFO, set_logging
 from typing_extensions import Annotated, Optional
 
@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 async def start_process(host: str, port: int):
     host = os.environ.get("SERVER_HOST", host)
     port = int(os.environ.get("SERVER_PORT", port))
-    gateway = get_async_gateway(host, port, use_grpc=False)
+    gateway = Gateway(host, port)
     data_manager = DataManager()
     frame_stream = FrameStream(data_manager)
     audio_stream = AudioStream(data_manager)
