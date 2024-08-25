@@ -27,8 +27,9 @@ async def start_process(host: str, port: int):
     gateway.register_stream(frame_stream)
     gateway.register_stream(audio_stream)
     gateway.register_stream(screen_stream)
-    await gateway.run_game(["ZEN", "ZEN"], ["BlackMamba", "BlackMamba"], 1)
-    await gateway.start_stream()
+    run_game_task = gateway.run_game(["ZEN", "ZEN"], ["BlackMamba", "BlackMamba"], 1)
+    stream_task = gateway.start_stream()
+    await asyncio.gather(run_game_task, stream_task)
 
 
 @app.command()
